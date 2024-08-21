@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
     const [canRecord, setCanRecord] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [recorder, setRecorder] = useState(null);
-    const [chunks, setChunks] = useState([]);
-    const playbackRef = React.useRef(null);
+    const chunksRef = useRef([]);
+    const playbackRef = useRef(null);
 
     useEffect(() => {
         async function setupAudio() {
@@ -15,12 +15,12 @@ function App() {
                 const newRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
 
                 newRecorder.ondataavailable = e => {
-                    setChunks(prevChunks => [...prevChunks, e.data]);
+                    chunksRef.current.push(e.data);
                 }
 
                 newRecorder.onstop = async () => {
-                    const blob = new Blob(chunks, { type: 'audio/webm' });
-                    setChunks([]);
+                    const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+                    chunksRef.current = [];
                     const audioUrl = window.URL.createObjectURL(blob);
                     if (playbackRef.current) playbackRef.current.src = audioUrl;
 
@@ -39,7 +39,7 @@ function App() {
         }
 
         setupAudio();
-    }, [chunks]);
+    }, []);
 
     const toggleMic = () => {
         if (!canRecord) return;

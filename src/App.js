@@ -5,6 +5,7 @@ function App() {
     const [canRecord, setCanRecord] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [recorder, setRecorder] = useState(null);
+    const [transcript, setTranscript] = useState('');
     const chunksRef = useRef([]);
     const playbackRef = useRef(null);
 
@@ -41,6 +42,34 @@ function App() {
         setupAudio();
     }, []);
 
+    useEffect(() => {
+        if (!isRecording) return;
+
+        // Check for SpeechRecognition API support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+        if (!SpeechRecognition) {
+            console.error("Speech Recognition API is not supported in this browser.");
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.continuous = true;
+
+        recognition.onresult = (event) => {
+            let finalTranscript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                finalTranscript += event.results[i][0].transcript;
+            }
+            setTranscript(finalTranscript);
+        };
+
+        recognition.start();
+
+        return () => recognition.stop();
+    }, [isRecording]);
+
     const toggleMic = () => {
         if (!canRecord) return;
 
@@ -75,6 +104,8 @@ function App() {
             console.log('Success:', data);
             if (data.audio) {
                 playAudioResponse(data.audio);
+                // Assuming the backend returns a transcribed text
+                setTranscript(data.transcript || '');
             }
         })
         .catch(error => {
@@ -119,6 +150,10 @@ function App() {
             </button>
 
             <audio className="playback" controls ref={playbackRef}></audio>
+
+            <div className="transcription">
+                <p>{transcript}</p>
+            </div>
         </main>
     );
 }

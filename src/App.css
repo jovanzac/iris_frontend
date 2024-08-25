@@ -121,41 +121,52 @@ main {
   display: none;
 }
 
-/* Transcript Box Styles */
-.transcription {
+/* Command Transcript Box Styles */
+.command {
   width: 80%;
-  /* Fixed width */
   max-width: 600px;
-  /* Max width for larger screens */
   min-height: 150px;
-  /* Fixed height */
   max-height: 300px;
-  /* Set a maximum height */
   overflow-y: auto;
-  /* Enable scrolling if the transcript overflows */
-  background-color: #f9f9f9;
-  /* Light grey background */
+  background-color: #e6f7ff;
+  /* Light blue background */
   border: 2px solid #007BFF;
   /* Blue border */
   border-radius: 10px;
-  /* Rounded corners */
   padding: 20px;
-  /* Space inside the box */
   margin-top: 20px;
-  /* Space above the box */
   font-family: 'Arial', sans-serif;
-  /* Font style */
   font-size: 1.1em;
-  /* Slightly larger font size */
   color: #333;
-  /* Darker text color */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  /* Subtle shadow for a 3D effect */
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   white-space: pre-wrap;
-  /* Preserve whitespace and wrap text */
   word-wrap: break-word;
-  /* Break words if they exceed the box width */
+}
+
+/* Response Transcript Box Styles */
+.response {
+  width: 80%;
+  max-width: 600px;
+  min-height: 150px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #f9f9f9;
+  /* Light grey background */
+  border: 2px solid #28a745;
+  /* Green border */
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  font-family: 'Arial', sans-serif;
+  font-size: 1.1em;
+  color: #333;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }

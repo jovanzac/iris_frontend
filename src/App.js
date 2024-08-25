@@ -154,7 +154,7 @@ function App() {
             <audio className="playback" controls ref={playbackRef}></audio>
 
             <div className="transcription">
-                <p className="command">{commandTranscript}</p>
+                
                 <p className="response">{responseTranscript}</p>
             </div>
         </main>

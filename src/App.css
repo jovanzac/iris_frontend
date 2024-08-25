@@ -121,68 +121,37 @@ main {
   display: none;
 }
 
-/* Command Transcript Box Styles */
+/* Command Transcript Box Styles - HIDDEN */
 .command {
-  width: 80%;
-  max-width: 600px;
-  min-width: 400px;
-  /* Set a minimum width */
-  min-height: 50px;
-  /* Fit one line of text */
-  height: 50px;
-  /* Set a fixed height to show one sentence */
-  background-color: #e6f7ff;
-  border: 2px solid #007BFF;
-  border-radius: 10px;
-  padding: 10px;
-  margin-top: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 1.1em;
-  color: #333;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  /* Center text vertically */
-  justify-content: center;
-  /* Center text horizontally */
-  white-space: nowrap;
-  /* Ensure text stays in one line */
-  text-align: center;
+  display: none;
 }
 
-/* Response Transcript Box Styles */
 .response {
-  width: 80%;
-  max-width: 600px;
+  max-width: 80%;
+  /* Make sure the box is responsive */
+  max-height: 150px;
+  /* Limit the height of the box */
   min-width: 400px;
-  /* Set a minimum width */
   min-height: 150px;
-  /* Set a minimum height */
-  height: 200px;
-  /* Set a fixed height for initial appearance */
-  overflow-y: auto;
-  background-color: #f9f9f9;
-  border: 2px solid #28a745;
-  border-radius: 10px;
-  padding: 20px;
-  margin-top: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 1.1em;
-  color: #333;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: flex-start;
-  /* Align text at the start */
-  justify-content: flex-start;
-  /* Align text at the start */
-  white-space: pre-wrap;
+  overflow: auto;
+  /* Allow scrolling if content overflows */
   word-wrap: break-word;
+  /* Break long words to avoid overflow */
+  padding: 10px;
+  border: 2px solid #007BFF;
+  /* Add a colored border */
+  border-radius: 8px;
+  /* Rounded corners for aesthetics */
+  background-color: #f9f9f9;
+  /* Light background for readability */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  /* Add a subtle shadow for depth */
 }
 
-/* Center boxes in main container */
 .transcription {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 2rem;
+  padding: 1rem 1rem;
+  /* Reduce the padding to bring elements closer */
 }

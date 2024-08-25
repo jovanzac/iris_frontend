@@ -92,7 +92,7 @@ function App() {
     };
 
     const sendAudio = (base64Audio) => {
-        fetch('http://127.0.0.1:5000/prompt', {
+        fetch('http://localhost:5000/prompt', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -152,7 +152,7 @@ function App() {
             <audio className="playback" controls ref={playbackRef}></audio>
 
             <div className="transcription">
-                <p>{transcript}</p>
+                <p className="transcript-box">{transcript}</p>
             </div>
         </main>
     );

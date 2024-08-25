@@ -5,7 +5,8 @@ function App() {
     const [canRecord, setCanRecord] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
     const [recorder, setRecorder] = useState(null);
-    const [transcript, setTranscript] = useState('');
+    const [commandTranscript, setCommandTranscript] = useState('');
+    const [responseTranscript, setResponseTranscript] = useState('');
     const chunksRef = useRef([]);
     const playbackRef = useRef(null);
 
@@ -28,7 +29,7 @@ function App() {
                     // Convert blob to base64
                     const base64Audio = await blobToBase64(blob);
 
-                    // Send the base64 audio to the Flask backend
+                    // Send the base64 audio to the backend
                     sendAudio(base64Audio);
                 }
 
@@ -62,7 +63,7 @@ function App() {
             for (let i = event.resultIndex; i < event.results.length; i++) {
                 finalTranscript += event.results[i][0].transcript;
             }
-            setTranscript(finalTranscript);
+            setCommandTranscript(finalTranscript);
         };
 
         recognition.start();
@@ -76,6 +77,8 @@ function App() {
         setIsRecording(!isRecording);
 
         if (!isRecording) {
+            setCommandTranscript('');  // Clear command transcript
+            setResponseTranscript(''); // Clear response transcript
             recorder.start();
         } else {
             recorder.stop();
@@ -92,7 +95,7 @@ function App() {
     };
 
     const sendAudio = (base64Audio) => {
-        fetch('http://localhost:5000/prompt', {
+        fetch('http://127.0.0.1:5000/prompt', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,8 +107,7 @@ function App() {
             console.log('Success:', data);
             if (data.audio) {
                 playAudioResponse(data.audio);
-                // Assuming the backend returns a transcribed text
-                setTranscript(data.transcript || '');
+                setResponseTranscript(data.transcript || ''); // Set response transcript
             }
         })
         .catch(error => {
@@ -152,7 +154,8 @@ function App() {
             <audio className="playback" controls ref={playbackRef}></audio>
 
             <div className="transcription">
-                <p className="transcript-box">{transcript}</p>
+                <p className="command">{commandTranscript}</p>
+                <p className="response">{responseTranscript}</p>
             </div>
         </main>
     );

@@ -9,6 +9,8 @@ function App() {
     const [responseTranscript, setResponseTranscript] = useState('');
     const chunksRef = useRef([]);
     const playbackRef = useRef(null);
+    const responseSectionRef = useRef(null); // Ref for the response section
+    const micSectionRef = useRef(null); // Ref for mic section
 
     useEffect(() => {
         async function setupAudio() {
@@ -26,10 +28,7 @@ function App() {
                     const audioUrl = window.URL.createObjectURL(blob);
                     if (playbackRef.current) playbackRef.current.src = audioUrl;
 
-                    // Convert blob to base64
                     const base64Audio = await blobToBase64(blob);
-
-                    // Send the base64 audio to the backend
                     sendAudio(base64Audio);
                 }
 
@@ -46,7 +45,6 @@ function App() {
     useEffect(() => {
         if (!isRecording) return;
 
-        // Check for SpeechRecognition API support
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         if (!SpeechRecognition) {
@@ -71,6 +69,22 @@ function App() {
         return () => recognition.stop();
     }, [isRecording]);
 
+    // Handle spacebar press to trigger the button and prevent page scroll
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.code === 'Space') { // Check if spacebar is pressed
+                event.preventDefault(); // Prevent default spacebar scroll
+                toggleMic(); // Trigger the microphone toggle
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isRecording, canRecord]); // Re-run the effect if the recording state changes
+
     const toggleMic = () => {
         if (!canRecord) return;
 
@@ -82,6 +96,11 @@ function App() {
             recorder.start();
         } else {
             recorder.stop();
+        }
+
+        // Scroll up to the microphone button section
+        if (micSectionRef.current) {
+            micSectionRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     };
 
@@ -107,7 +126,12 @@ function App() {
             console.log('Success:', data);
             if (data.audio) {
                 playAudioResponse(data.audio);
-                setResponseTranscript(data.transcript || ''); // Set response transcript
+                setResponseTranscript(data.message || ''); // Set response transcript
+
+                // Smoothly scroll to the response section
+                if (responseSectionRef.current) {
+                    responseSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         })
         .catch(error => {
@@ -145,18 +169,23 @@ function App() {
 
     return (
         <main>
-            <button className={`mic-toggle ${isRecording ? 'is-recording' : ''}`} onClick={toggleMic}>
-                <span className="material-symbols-outlined">
-                    mic
-                </span>
-            </button>
+            {/* Microphone button section */}
+            <section className="page" ref={micSectionRef}>
+                <button className={`mic-toggle ${isRecording ? 'is-recording' : ''}`} onClick={toggleMic}>
+                    <span className="material-symbols-outlined">
+                        mic
+                    </span>
+                </button>
 
-            <audio className="playback" controls ref={playbackRef}></audio>
+                <audio className="playback" controls ref={playbackRef}></audio>
+            </section>
 
-            <div className="transcription">
-                <p className="command">{commandTranscript}</p>
-                <p className="response">{responseTranscript}</p>
-            </div>
+            {/* Response section */}
+            <section className="page" ref={responseSectionRef}>
+                <div className="transcription">
+                    <p className="response">{responseTranscript}</p>
+                </div>
+            </section>
         </main>
     );
 }

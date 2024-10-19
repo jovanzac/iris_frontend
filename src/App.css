@@ -14,14 +14,27 @@ button {
 }
 
 body {
-  background-color: #eee;
+  background-color: #333333;
 }
 
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove padding here */
+  scroll-behavior: smooth; /* Enable smooth scrolling globally */
+}
+
+/* Define "page" sections that simulate multiple pages */
+.page {
+  min-height: 100vh; /* Each page takes up full viewport height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 4rem 2rem;
+  box-sizing: border-box;
 }
 
 .mic-toggle {
@@ -30,7 +43,7 @@ main {
   width: 8rem;
   height: 8rem;
   border-radius: 50%;
-  background-color: crimson;
+  background-color: black;
   margin-bottom: 4rem;
 }
 
@@ -153,22 +166,22 @@ main {
 /* Response Transcript Box Styles */
 .response {
   width: 80%;
-  max-width: 600px;
-  min-width: 400px;
+  max-width: 1200px;
+  min-width: 900px;
   /* Set a minimum width */
-  min-height: 150px;
+  min-height: 700px;
   /* Set a minimum height */
-  height: 200px;
+  height: 700px;
   /* Set a fixed height for initial appearance */
   overflow-y: auto;
-  background-color: #f9f9f9;
-  border: 2px solid #28a745;
+  background-color: #1f1d1d;
+  border: 2px solid #000000;
   border-radius: 10px;
   padding: 20px;
   margin-top: 20px;
   font-family: 'Arial', sans-serif;
   font-size: 1.1em;
-  color: #333;
+  color: #dbd0d0;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: flex-start;
@@ -177,6 +190,7 @@ main {
   /* Align text at the start */
   white-space: pre-wrap;
   word-wrap: break-word;
+  line-height: 1.6;
 }
 
 /* Center boxes in main container */
@@ -185,4 +199,19 @@ main {
   flex-direction: column;
   align-items: center;
   padding: 4rem 2rem;
+}
+
+/* Added scrolling styling for full-page sections */
+.page {
+  height: 100vh; /* Each section takes up the full viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+/* Optional: Add a smooth transition for when scrolling to a new page */
+html {
+  scroll-behavior: smooth;
 }
